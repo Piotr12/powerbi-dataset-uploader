@@ -9,7 +9,7 @@ import json
 import sys
 import atexit
 import os
-
+import pprint
 
 class PowerBIPushDataSet:
     def __init__(self,name,guid = "NotAssignedYet",api_editable=True):
@@ -24,14 +24,14 @@ class PowerBIPushDataSet:
         else:
             return f"!NOT EDITABLE! DataSet {self.name}, {self.guid}."
 
-    def as_api_create_new_entity_string(self):
+    def parse_as_api_create_new_entity_string(self):
         # should be using json package vs this silly thing.
         my_json = '{\n'
         my_json += f'\t"name":"{self.name}",\n'
         my_json += f'\t"defaultMode": "Push",\n'
         my_json += f'\t"tables":[\n'
         for table in self.tables:
-            my_json += table.as_api_create_new_entity_string() + ",\n"
+            my_json += table.parse_as_api_create_new_entity_string() + ",\n"
         my_json = my_json[:-2] + "\n" #last comma ... should not be doing this 
         my_json += f'\t]\n'
         my_json += '}'
@@ -114,12 +114,13 @@ class PowerBiPushDataSetUploader:
             response = requests.get(url=url,headers = self.authenticated_header)
             if (response.status_code==200):
                 y = json.loads(response.content.decode())["value"]
+
                 for dataset_dict in y:
                     results_list.append(PowerBIPushDataSet(dataset_dict["name"],
                                                             dataset_dict["id"],
                                                             dataset_dict["addRowsAPIEnabled"]))
                 return results_list
-            else:
+            else:   
                 print (f"PowerBIPushDataSet class says: Issue while querying {url}, response code: {response.status_code}, expected 200")
         else:
             print ("PowerBIPushDataSet class says: Not logged in!")

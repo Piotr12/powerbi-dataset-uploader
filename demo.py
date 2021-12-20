@@ -5,7 +5,8 @@ auth_dict = {
     "client_id" : os.environ.get("PBI_UPLOADER_CLIENT_ID","variable is not set in os env variables?"),
     "secret" : os.environ.get("PBI_UPLOADER_SECRET","variable is not set in os env variables?"),
     "tenant_id" : os.environ.get("PBI_UPLOADER_TENANT_ID","variable is not set in os env variables?"),
-    "scope" : ["https://analysis.windows.net/powerbi/api/Dashboard.ReadWrite.All"]
+    "scope" : ["https://analysis.windows.net/powerbi/api/DataSet.ReadWrite.All"]
+    #"scope" : ["https://analysis.windows.net/powerbi/api/.default"]
 }
 
 uploader = pbi.PowerBiPushDataSetUploader(auth_dict)
