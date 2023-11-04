@@ -205,5 +205,5 @@ class PowerBiPushDataSetUploader:
             data += "\t},\n"
         data = data[:-2] + "\n" # TODO fix it with Json lib not own code 
         data += "]}\n"
-        print (data)
+        #print (data)
         return data
